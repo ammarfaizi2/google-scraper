@@ -38,11 +38,11 @@ $commands = [
 	],
 	[
 		($sh()),
-		"cd /tmp && sudo tar -xf phpcpp && cd *PHP* && make -j 5 && sudo make install -j 5"
+		"cd /tmp && sudo tar -xf phpcpp && cd *PHP* && make -j 5 && make install -j 5"
 	],
 	[
 		true,
-		"cd ".__DIR__."/ && make -j3 && sudo make install"
+		"nice -n 19 bash -c ".escapeshellarg("cd ".__DIR__."/ && make -j2 && make install")
 	]
 ];
 
@@ -54,3 +54,5 @@ foreach($commands as $command) {
 		proc_close($proc);
 	}
 }
+print "OK!\n";
+exit(0);
