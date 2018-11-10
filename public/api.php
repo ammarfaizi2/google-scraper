@@ -22,7 +22,6 @@ if (!isset($_GET["q"])) {
 
 }
 
-
 $page = 0;
 
 if (isset($_GET["page"])) {
@@ -57,5 +56,4 @@ if ($page < 0) {
 	exit;
 }
 
-
-print json_encode(google_search($_GET["q"], $page));
+print json_encode(google_search($_GET["q"], $page), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
