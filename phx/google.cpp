@@ -11,5 +11,9 @@ Php::Value google_search(Php::Parameters &p) {
 }
 
 Php::Value google_image(Php::Parameters &p) {
-	return 1;
+	Google *g = new Google(p[0]);
+	g->setPage(p[1]);
+	Php::Value r = g->getImage();
+	delete g;
+	return r;
 }
