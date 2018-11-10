@@ -33,16 +33,19 @@ void Google::buildUrl() {
 
 void Google::exec() {
 	this->buildUrl();
-	printf("URL: %s\n", this->url.c_str());
-	// TeaCurl *tc = new TeaCurl(this->url);
-	// tc->setOpt(CURLOPT_COOKIEJAR, (this->getCwd()+"/cookie.txt").c_str());
-	// tc->setOpt(CURLOPT_COOKIEFILE, (this->getCwd()+"/cookie.txt").c_str());
-	// tc->setOpt(CURLOPT_USERAGENT, "Mozilla/5.0 (Android 9.0; Mobile; rv:61.0) Gecko/61.0 Firefox/61.0");
-	// tc->exec();
+	
+	// printf("URL: %s\n", this->url.c_str());
 
-	// this->body = tc->getBody();
+	TeaCurl *tc = new TeaCurl(this->url);
+	tc->setOpt(CURLOPT_COOKIEJAR, (this->getCwd()+"/cookie.txt").c_str());
+	tc->setOpt(CURLOPT_COOKIEFILE, (this->getCwd()+"/cookie.txt").c_str());
+	tc->setOpt(CURLOPT_USERAGENT, "Mozilla/5.0 (Android 9.0; Mobile; rv:61.0) Gecko/61.0 Firefox/61.0");
+	tc->exec();
+
+	this->body = tc->getBody();
 	this->body = this->phpStr(Php::call("file_get_contents", "a.tmp"));
-	// delete tc;
+	
+	delete tc;
 }
 
 std::string Google::html_entity_decode(char *str) {
@@ -77,6 +80,9 @@ void Google::parse() {
 	for (i = 0; i < matchCount; ++i) {
 		rTmp[0] = rTmp[1] = rTmp[2] = "";
 		
+		//
+		// // debug only
+		//
 		// printf("Result %d:\n", i);
 		// for (j = 1; j < matchCountD2; j++)
 		// {
@@ -84,14 +90,23 @@ void Google::parse() {
 		// }
 		// printf("======================\n");
 
+		free(result[i][0]);
 		rTmp[0] = this->html_entity_decode(result[i][1]);
+		free(result[i][1]);
 		rTmp[1] = this->html_entity_decode(result[i][2]);
+		free(result[i][2]);
 		rTmp[2] = this->html_entity_decode(result[i][3]);
+		free(result[i][3]);
+		free(result[i]);
+		result[i][0] = result[i][1] = result[i][2] = result[i][3] = nullptr;
+		result[i] = nullptr;
 
 		this->descriptionParser(&rTmp[2]);
 
 		r.push_back(rTmp);
 	}
+	free(result);
+	result = nullptr;
 
 	Php::call("var_dump", r);//Php::call("json_encode", r, 128));
 
