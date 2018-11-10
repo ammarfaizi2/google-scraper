@@ -120,7 +120,9 @@ void Google::descriptionParser(std::string *desc_str) {
 			for (i = 0; i < matchCountD2; ++i) {
 				r1.push_back(std::string(result[j][i]));
 				r2.push_back("");
-			}	
+				free(result[j][i]);
+			}
+			free(result[j]);
 		}
 
 		r1.push_back("\t");
