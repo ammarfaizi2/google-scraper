@@ -47,8 +47,6 @@ install:
 						${LN} ${INI_DIR}/${PRIORITY}-${INI} /etc/php/${PHP_VERSION}/fpm/conf.d
 						${LN} ${INI_DIR}/${PRIORITY}-${INI} /etc/php/${PHP_VERSION}/embed/conf.d
 						${LN} ${INI_DIR}/${PRIORITY}-${INI} /etc/php/${PHP_VERSION}/phpdbg/conf.d
-						${RM} ${EXTENSION} ${OBJECTS}
-
 
 clean:
 						${RM} ${OBJECTS} ${EXTENSION}
