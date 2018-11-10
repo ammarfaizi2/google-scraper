@@ -19,6 +19,7 @@ private:
 	void exec();
 	void buildUrl();
 	void parse();
+	void descriptionParser(std::string*);
 
 	int page = 0;
 
