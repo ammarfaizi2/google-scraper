@@ -46,16 +46,12 @@ void Google::exec() {
 }
 
 std::string Google::html_entity_decode(char *str) {
-	return Php::call(
+	return Php::call("trim", Php::call(
 		"html_entity_decode",
-		str,
+		std::string(str),
 		Php::call("constant", "ENT_QUOTES"),
 		"UTF-8"
-	);
-}
-
-std::string strip_tags(std::string str) {
-	return Php::call("strip_tags", str);
+	));
 }
 
 void Google::parse() {
@@ -64,7 +60,7 @@ void Google::parse() {
 	TeaPCRE *tre = new TeaPCRE();
 	tre->setSubject(this->body.c_str());
 	tre->setPattern(
-		"(?:<div class=\"\\w{1,10}\\s\\w{1,10}\\s\\w{1,10}\\s\\w{1,10}\">.+<a href=\"/url\\?q=)(.*)(?:&amp.+\".+<div.+>)(.*)(?:<\\/div>.+<div class=\"\\w{1,10}\\s\\w{1,10}\\s\\w{1,10}\">)(\\w{5,})(?:<)",
+		"(?:<div class=\"\\w{1,10}\\s\\w{1,10}\\s\\w{1,10}\\s\\w{1,10}\">.+<a href=\"/url\\?q=)(.*)(?:&amp.+\".+<div.+>)(.*)(?:<\\/div>.+<div class=\"\\w{1,10}\\s\\w{1,10}\\s\\w{1,10}\">.+<div class=\"\\w{1,10}\">.+<div class=\"\\w{1,10}\\s\\w{1,10}\\s\\w{1,10}\">)([^\\<]*)(?:<)",
 		PCRE_CASELESS | PCRE_DOTALL | PCRE_UNGREEDY | PCRE_MULTILINE
 	);
 
@@ -81,8 +77,15 @@ void Google::parse() {
 	for (i = 0; i < matchCount; ++i) {
 		rTmp[0] = rTmp[1] = rTmp[2] = "";
 		
+		printf("Result %d:\n", i);
+		for (j = 1; j < matchCountD2; j++)
+		{
+			printf("\tSub Result %d: \n\t\t%s\n", j, result[i][j]);
+		}
+		printf("======================\n");
+
 		rTmp[0] = this->html_entity_decode(result[i][1]);
-		rTmp[1] = this->strip_tags(this->html_entity_decode(result[i][2]));
+		rTmp[1] = this->html_entity_decode(result[i][2]);
 		rTmp[2] = this->html_entity_decode(result[i][3]);
 
 		r.push_back(rTmp);
