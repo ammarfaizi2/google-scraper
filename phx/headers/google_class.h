@@ -13,11 +13,13 @@ public:
 
 	void setPage(int);
 	Php::Value get();
+	Php::Value getImage();
 
 private:
 
 	void exec();
 	void buildUrl();
+	void imageExec();
 	void descriptionParser(std::string*);
 
 	int page = 0;
@@ -28,6 +30,7 @@ private:
 	std::string strip_tags(std::string);
 	std::string html_entity_decode(char *);
 	std::vector<std::vector<std::string>> parse();
+	std::vector<std::vector<std::string>> imageParse();
 
 	std::string body;
 	std::string query;	

@@ -1,4 +1,11 @@
 
+/**
+ *
+ * @author Ammar Faizi <ammarfaizi2@gmail.com> https://www.facebook.com/ammarfaizi2
+ * @license MIT
+ *
+ */
+
 #include "headers/google_class.h"
 #include "tealib/TeaCurl/TeaCurl.h"
 #include "tealib/TeaPCRE/TeaPCRE.h"
@@ -163,4 +170,21 @@ void Google::descriptionParser(std::string *desc_str) {
 Php::Value Google::get() {
 	this->exec();
 	return this->parse();
+}
+
+void imageExec() {
+
+}
+
+std::vector<std::vector<std::string>> imageParse() {
+	std::vector<std::vector<std::string>> dresult;
+	std::vector<std::string> rTmp = {""};
+	
+
+	return dresult;
+}
+
+Php::Value Google::getImage() {
+	this->imageExec();
+	return this->parseImage();
 }
