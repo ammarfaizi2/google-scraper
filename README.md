@@ -9,3 +9,7 @@ cd google-scraper
 sudo php build.php
 cd public && php -d extension=$(pwd)/../google-scraper.so -S 0.0.0.0:3000
 ```
+
+
+Usage Example:
+http://localhost/api.php?q=es+teh&page=3
