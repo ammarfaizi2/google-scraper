@@ -43,7 +43,6 @@ void Google::exec() {
 	tc->exec();
 
 	this->body = tc->getBody();
-	this->body = this->phpStr(Php::call("file_get_contents", "a.tmp"));
 	
 	delete tc;
 }
@@ -57,7 +56,7 @@ std::string Google::html_entity_decode(char *str) {
 	));
 }
 
-void Google::parse() {
+std::vector<std::vector<std::string>> Google::parse() {
 
 	char ***result = (char***)malloc(10 * sizeof(char*));
 	TeaPCRE *tre = new TeaPCRE();
@@ -75,6 +74,8 @@ void Google::parse() {
 	// 1 = title
 	// 2 = description
 	;
+
+	std::vector<std::vector<std::string>> dresult;
 	std::vector<std::string> rTmp = {"", "", ""};
 
 	for (i = 0; i < matchCount; ++i) {
@@ -103,14 +104,16 @@ void Google::parse() {
 
 		this->descriptionParser(&rTmp[2]);
 
-		this->result.push_back(rTmp);
+		dresult.push_back(rTmp);
 	}
 	free(result);
 	result = nullptr;
 
-	// Php::call("var_dump", r);//Php::call("json_encode", r, 128));
+	// Php::call("printf", "%s", Php::call("json_encode", this->result, 128));
 
 	delete tre;
+
+	return dresult;
 }
 
 void Google::descriptionParser(std::string *desc_str) {
@@ -159,6 +162,5 @@ void Google::descriptionParser(std::string *desc_str) {
 
 Php::Value Google::get() {
 	this->exec();
-	this->parse();
-	return sthis->result;
+	return this->parse();
 }
