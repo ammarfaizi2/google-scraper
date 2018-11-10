@@ -42,7 +42,7 @@ $commands = [
 	],
 	[
 		true,
-		"nice -n 19 bash -c ".escapeshellarg("cd ".__DIR__."/ && make -j2 && make install")
+		"nice bash -c ".escapeshellarg("cd ".__DIR__."/ && make -j2 && make install")
 	]
 ];
 
