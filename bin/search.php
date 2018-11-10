@@ -1,5 +1,4 @@
 <?php
 
-$a = google_search("es teh segar");
+$a = google_search("es teh segar", 3);
 var_dump($a);
-// exit(0);
