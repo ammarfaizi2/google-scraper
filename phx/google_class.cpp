@@ -8,7 +8,7 @@ Google::Google(std::string query) {
 }
 
 Google::~Google() {
-	
+	// Destructor.
 }
 
 void Google::setPage(int page) {
