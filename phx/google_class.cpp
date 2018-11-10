@@ -60,7 +60,7 @@ void Google::parse() {
 	TeaPCRE *tre = new TeaPCRE();
 	tre->setSubject(this->body.c_str());
 	tre->setPattern(
-		"(?:<div class=\"\\w{1,10}\\s\\w{1,10}\\s\\w{1,10}\\s\\w{1,10}\">.+<a href=\"/url\\?q=)(.*)(?:&amp.+\".+<div.+>)(.*)(?:<\\/div>.+<div class=\"\\w{1,10}\\s\\w{1,10}\\s\\w{1,10}\">.+<div class=\"\\w{1,10}\">.+<div class=\"\\w{1,10}\\s\\w{1,10}\\s\\w{1,10}\">)([^\\<]*)(?:<)",
+		"(?:<div class=\"\\w{1,10}\\s\\w{1,10}\\s\\w{1,10}\\s\\w{1,10}\">.+<a href=\"/url\\?q=)(.*)(?:&amp.+\".+<div.+>)(.*)(?:<\\/div>.+<div class=\"\\w{1,10}\\s\\w{1,10}\\s\\w{1,10}\">)(.*)(?:<)",
 		PCRE_CASELESS | PCRE_DOTALL | PCRE_UNGREEDY | PCRE_MULTILINE
 	);
 
