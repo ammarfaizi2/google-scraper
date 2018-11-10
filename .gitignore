@@ -1,0 +1,6 @@
+*.so
+*.tmp
+*.swp
+*.swo
+/.phpintel/
+/cookie.txt
