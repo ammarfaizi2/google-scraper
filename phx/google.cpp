@@ -11,5 +11,5 @@ Php::Value google_search(Php::Parameters &p) {
 }
 
 Php::Value google_image(Php::Parameters &p) {
-
+	return 1;
 }
