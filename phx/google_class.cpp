@@ -74,7 +74,7 @@ void Google::parse() {
 	// 0 = url
 	// 1 = title
 	// 2 = description
-	std::vector<std::vector<std::string>> r;
+	;
 	std::vector<std::string> rTmp = {"", "", ""};
 
 	for (i = 0; i < matchCount; ++i) {
@@ -103,12 +103,12 @@ void Google::parse() {
 
 		this->descriptionParser(&rTmp[2]);
 
-		r.push_back(rTmp);
+		this->result.push_back(rTmp);
 	}
 	free(result);
 	result = nullptr;
 
-	Php::call("var_dump", r);//Php::call("json_encode", r, 128));
+	// Php::call("var_dump", r);//Php::call("json_encode", r, 128));
 
 	delete tre;
 }
@@ -150,8 +150,6 @@ void Google::descriptionParser(std::string *desc_str) {
 		r2.push_back("\n");
 
 		*desc_str = this->phpStr(Php::call("trim", Php::call("str_replace", r1, r2, *desc_str)));
-		
-		printf("\n\nRd: %s\n", (*desc_str).c_str());
 	}
 	free(result);
 	delete tre;
@@ -159,8 +157,8 @@ void Google::descriptionParser(std::string *desc_str) {
 	result = nullptr;
 }
 
-std::string Google::get() {
+Php::Value Google::get() {
 	this->exec();
 	this->parse();
-	return this->body;
+	return sthis->result;
 }

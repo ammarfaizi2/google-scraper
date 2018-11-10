@@ -12,7 +12,8 @@ public:
 	~Google();
 
 	void setPage(int);
-	std::string get();
+	// std::vector<std::vector<std::string>> get();
+	Php::Value get();
 
 private:
 
@@ -32,6 +33,8 @@ private:
 	std::string body;
 	std::string query;	
 	std::string url = "https://www.google.com/search?q=";
+
+	std::vector<std::vector<std::string>> result;
 };
 
 #endif
