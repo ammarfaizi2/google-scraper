@@ -3,6 +3,7 @@
 *.tmp
 *.swp
 *.swo
+*.log
 /.phpintel/
 /cookie.txt
 /.gdb_history
