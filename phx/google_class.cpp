@@ -70,7 +70,7 @@ std::vector<std::vector<std::string>> Google::parse() {
 	tre->setSubject(this->body.c_str());
 	tre->setPattern(
 		"(?:<div class=\"\\w{1,10}\\s\\w{1,10}\\s\\w{1,10}\\s\\w{1,10}\">.+<a href=\"/url\\?q=)(.*)(?:&amp.+\".+<div.+>)(.*)(?:<\\/div>.+<div class=\"\\w{1,10}\\s\\w{1,10}\\s\\w{1,10}\">)(.*)(?:<\\/div>[^\\<\\>]*<\\/div>)",
-		PCRE_CASELESS | PCRE_DOTALL | PCRE_UNGREEDY | PCRE_MULTILINEE
+		PCRE_CASELESS | PCRE_DOTALL | PCRE_UNGREEDY | PCRE_MULTILINE
 	);
 
 	unsigned int matchCount, matchCountD2, i
@@ -171,30 +171,82 @@ Php::Value Google::get() {
 	return this->parse();
 }
 
-void imageExec() {
-	this->buildUrl();
-	this->url += "&tbm=isch";
+void Google::imageExec() {
+	// this->buildUrl();
+	// this->url += "&tbm=isch";
 
-	TeaCurl *tc = new TeaCurl(this->url);
-	tc->setOpt(CURLOPT_COOKIEJAR, (this->getCwd()+"/cookie.txt").c_str());
-	tc->setOpt(CURLOPT_COOKIEFILE, (this->getCwd()+"/cookie.txt").c_str());
-	tc->setOpt(CURLOPT_USERAGENT, "Mozilla/5.0 (Android 9.0; Mobile; rv:61.0) Gecko/61.0 Firefox/61.0");
-	tc->exec();
+	// TeaCurl *tc = new TeaCurl(this->url);
+	// tc->setOpt(CURLOPT_COOKIEJAR, (this->getCwd()+"/cookie.txt").c_str());
+	// tc->setOpt(CURLOPT_COOKIEFILE, (this->getCwd()+"/cookie.txt").c_str());
+	// tc->setOpt(CURLOPT_USERAGENT, "Mozilla/5.0 (Android 9.0; Mobile; rv:61.0) Gecko/61.0 Firefox/61.0");
+	// tc->exec();
 
-	this->body = tc->getBody();
-	Php::call("file_put_contents", "b.tmp", this->body);
-	delete tc;
+	// this->body = tc->getBody();
+	// Php::call("file_put_contents", "b.tmp", this->body);
+	this->body = this->phpStr(Php::call("file_get_contents", "b.tmp"));
+	// delete tc;
 }
 
-std::vector<std::vector<std::string>> imageParse() {
+std::vector<std::vector<std::string>> Google::imageParse() {	
+
+	// src="https://encrypted
+
+	char ***result = (char***)malloc(50 * sizeof(char*));
+	TeaPCRE *tre = new TeaPCRE();
+	tre->setSubject(this->body.c_str());
+	tre->setPattern(
+		"(?:data-index=\")(\\d+)(?:\".+src=\")(https:\\/\\/encrypted.+)(?:\".+alt=\")(.*)(?:\")",
+		PCRE_CASELESS | PCRE_DOTALL | PCRE_UNGREEDY | PCRE_MULTILINE
+	);
+
+	unsigned int matchCount, matchCountD2, i, j;
+	tre->multiFindAll(result, &matchCount, &matchCountD2, 50u);
+
+	// 0 = data-index
+	// 1 = image url
+	// 2 = description
+
 	std::vector<std::vector<std::string>> dresult;
-	std::vector<std::string> rTmp = {""};
+	std::vector<std::string> rTmp = {"", "", ""};
 
+	for (i = 0; i < matchCount; ++i) {
+		rTmp[0] = rTmp[1] = rTmp[2] = "";
+		
+		
+		// debug only
+		
+		// printf("Result %d:\n", i);
+		// for (j = 1; j < matchCountD2; j++)
+		// {
+		// 	printf("\tSub Result %d: \n\t\t%s\n", j, result[i][j]);
+		// }
+		// printf("======================\n");
 
+		free(result[i][0]);
+		rTmp[0] = this->html_entity_decode(result[i][1]);
+		free(result[i][1]);
+		rTmp[1] = this->html_entity_decode(result[i][2]);
+		free(result[i][2]);
+		rTmp[2] = this->html_entity_decode(result[i][3]);
+		free(result[i][3]);
+		free(result[i]);
+		result[i][0] = result[i][1] = result[i][2] = result[i][3] = nullptr;
+		result[i] = nullptr;
+
+		this->descriptionParser(&rTmp[2]);
+
+		dresult.push_back(rTmp);
+	}
+	free(result);
+	result = nullptr;
+
+	// Php::call("printf", "%s", Php::call("json_encode", this->result, 128));
+
+	delete tre;
 	return dresult;
 }
 
 Php::Value Google::getImage() {
 	this->imageExec();
-	return this->parseImage();
+	return this->imageParse();
 }
