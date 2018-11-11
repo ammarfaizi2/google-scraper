@@ -4,7 +4,7 @@
 
 extern "C" {
     PHPCPP_EXPORT void *get_module() {
-        static Php::Extension extension("teaai", "1.0");
+        static Php::Extension extension("google-scraper", "1.0");
         extension.add<google_search>("google_search", {
         	Php::ByVal("query", Php::Type::String),
         	Php::ByVal("page", Php::Type::Numeric)
