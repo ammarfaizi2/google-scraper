@@ -172,19 +172,19 @@ Php::Value Google::get() {
 }
 
 void Google::imageExec() {
-	// this->buildUrl();
-	// this->url += "&tbm=isch";
+	this->buildUrl();
+	this->url += "&tbm=isch";
 
-	// TeaCurl *tc = new TeaCurl(this->url);
-	// tc->setOpt(CURLOPT_COOKIEJAR, (this->getCwd()+"/cookie.txt").c_str());
-	// tc->setOpt(CURLOPT_COOKIEFILE, (this->getCwd()+"/cookie.txt").c_str());
-	// tc->setOpt(CURLOPT_USERAGENT, "Mozilla/5.0 (Android 9.0; Mobile; rv:61.0) Gecko/61.0 Firefox/61.0");
-	// tc->exec();
+	TeaCurl *tc = new TeaCurl(this->url);
+	tc->setOpt(CURLOPT_COOKIEJAR, (this->getCwd()+"/cookie.txt").c_str());
+	tc->setOpt(CURLOPT_COOKIEFILE, (this->getCwd()+"/cookie.txt").c_str());
+	tc->setOpt(CURLOPT_USERAGENT, "Mozilla/5.0 (Android 9.0; Mobile; rv:61.0) Gecko/61.0 Firefox/61.0");
+	tc->exec();
 
-	// this->body = tc->getBody();
+	this->body = tc->getBody();
 	// Php::call("file_put_contents", "b.tmp", this->body);
-	this->body = this->phpStr(Php::call("file_get_contents", "b.tmp"));
-	// delete tc;
+	// this->body = this->phpStr(Php::call("file_get_contents", "b.tmp"));
+	delete tc;
 }
 
 std::vector<std::vector<std::string>> Google::imageParse() {	
@@ -199,7 +199,7 @@ std::vector<std::vector<std::string>> Google::imageParse() {
 		PCRE_CASELESS | PCRE_DOTALL | PCRE_UNGREEDY | PCRE_MULTILINE
 	);
 
-	unsigned int matchCount, matchCountD2, i, j;
+	unsigned int matchCount, matchCountD2, i;//, j;
 	tre->multiFindAll(result, &matchCount, &matchCountD2, 50u);
 
 	// 0 = data-index
