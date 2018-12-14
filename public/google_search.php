@@ -68,10 +68,19 @@ if (file_exists($f = __DIR__."/../proxy.json")) {
 	}
 }
 
-print json_encode(google_search(
+$data = [];
+foreach(google_search(
 	$_GET["q"],
 	$page,
 	$useProxy,
 	$pch,
 	$pauth
-), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+) as $q) {
+	$data[] = [
+		"url" => $q[0],
+		"heading" => $q[1],
+		"description" => $q[2]
+	];
+}
+
+print json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
