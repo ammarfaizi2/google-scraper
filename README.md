@@ -25,8 +25,8 @@ cd public && php -S 0.0.0.0:3000
 # Usage Example:
 
 ### Google Search
-https://google.teainside.org/google_search.php?q=berita%20terkini&page=5
+http://localhost:3000/google_search.php?q=berita%20terkini&page=5
 
 
 ### Google Image Search
-https://google.teainside.org/google_image.php?q=ice%20tea&page=5
+http://localhost:3000/google_image.php?q=ice%20tea&page=5

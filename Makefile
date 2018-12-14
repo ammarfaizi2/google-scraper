@@ -1,7 +1,7 @@
 
 NAME = google-scraper
 
-PHP_VERSION = 7.2
+PHP_VERSION = 7.3
 INI_DIR = /etc/php/${PHP_VERSION}/mods-available
 
 EXTENSION_DIR = $(shell php-config${PHP_VERSION} --extension-dir)
