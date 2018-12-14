@@ -21,6 +21,7 @@ public:
 	CURLcode getRes();
 	void close();
 	void setOpt(CURLoption opt, const void *val);
+	void setProxy(std::string, std::string);
 	~TeaCurl();
 protected:
 private:

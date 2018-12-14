@@ -14,6 +14,7 @@ public:
 	void setPage(int);
 	Php::Value get();
 	Php::Value getImage();
+	void setProxy(std::string, std::string);
 
 private:
 
@@ -28,6 +29,9 @@ private:
 	std::string getEncodedQuery();
 	std::string phpStr(Php::Value);
 	std::string strip_tags(std::string);
+	std::string ch_proxy;
+	std::string ch_proxyauth;
+	int useProxy = 0;
 	std::string html_entity_decode(char *);
 	std::vector<std::vector<std::string>> parse();
 	std::vector<std::vector<std::string>> imageParse();

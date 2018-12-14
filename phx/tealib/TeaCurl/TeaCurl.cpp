@@ -65,6 +65,12 @@ void TeaCurl::setUp() {
 	curl_easy_setopt(this->ch, CURLOPT_WRITEHEADER, &this->responseHeader);
 }
 
+void TeaCurl::setProxy(std::string chp, std::string auth) {
+	curl_easy_setopt(this->ch, CURLOPT_PROXY, chp.c_str());
+	curl_easy_setopt(this->ch, CURLOPT_PROXYAUTH, CURLAUTH_ANY);
+	curl_easy_setopt(this->ch, CURLOPT_PROXYUSERPWD, auth.c_str());
+}
+
 void TeaCurl::close() {
 	this->cleanUp();
 	this->closed = 1;

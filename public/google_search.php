@@ -56,4 +56,22 @@ if ($page < 0) {
 	exit;
 }
 
-print json_encode(google_search($_GET["q"], $page), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+$pch = "";
+$pauth = "";
+$useProxy = 0;
+if (file_exists($f = __DIR__."/../proxy.json")) {
+	$f = json_decode(file_get_contents($f), true);
+	if (isset($f["ch"], $f["username"], $f["password"])) {
+		$pch = $f["ch"];
+		$useProxy = 1;
+		$pauth = "{$f["username"]}:{$f["password"]}";
+	}
+}
+
+print json_encode(google_search(
+	$_GET["q"],
+	$page,
+	$useProxy,
+	$pch,
+	$pauth
+), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);

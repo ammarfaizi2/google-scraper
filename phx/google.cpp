@@ -4,6 +4,9 @@
 
 Php::Value google_search(Php::Parameters &p) {
 	Google *g = new Google(p[0]);
+	if (p[2]) {
+		g->setProxy(p[3], p[4]);
+	}
 	g->setPage(p[1]);
 	Php::Value r = g->get();
 	delete g;

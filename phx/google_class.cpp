@@ -47,11 +47,25 @@ void Google::exec() {
 	tc->setOpt(CURLOPT_COOKIEJAR, (this->getCwd()+"/cookie.txt").c_str());
 	tc->setOpt(CURLOPT_COOKIEFILE, (this->getCwd()+"/cookie.txt").c_str());
 	tc->setOpt(CURLOPT_USERAGENT, "Mozilla/5.0 (Android 9.0; Mobile; rv:61.0) Gecko/61.0 Firefox/61.0");
+
+	if (this->useProxy) {
+		tc->setOpt(CURLOPT_PROXY, this->ch_proxy.c_str());
+		tc->setOpt(CURLOPT_PROXYUSERPWD, this->ch_proxyauth.c_str());
+		CURL *ch = tc->getCurlResource();
+		curl_easy_setopt(ch, CURLOPT_PROXYAUTH, CURLAUTH_ANY);
+	}
+
 	tc->exec();
 
 	this->body = tc->getBody();
 	
 	delete tc;
+}
+
+void Google::setProxy(std::string ch_proxy, std::string ch_proxyauth) {
+	this->useProxy = 1;
+	this->ch_proxy = ch_proxy;
+	this->ch_proxyauth = ch_proxyauth;
 }
 
 std::string Google::html_entity_decode(char *str) {
